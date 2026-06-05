@@ -1,2 +1,3 @@
 # medical_survey_app
-medical suvery platform for my surveys
+medical survery platform for my surveys
+view requirments and app file
