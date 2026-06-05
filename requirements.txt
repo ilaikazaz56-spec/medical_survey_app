@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 streamlit
-=======
-streamlit
->>>>>>> 2ff31cb53311488c85b8b7d7db19b6869804062b
 pandas
