@@ -1,0 +1,16 @@
+---
+title: "summer project mock reaserch on alcohol and social behavior"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r}
+# i am doing the questionere and will export to csv all the data
+# will let AI add mock blood test that make sense for age and stuff data for liver enzymes, kidney function, eeg data for while drunk testing.
+# i will do a phisical exam including blood pressure, mental readiness, heart raet, blood glucose, fine motor speed, stroop test, decible meter fopr social interaction,light reflex in eye, bp.
+# then do statisticle test to find significance.
+#plot the data on a ecxel sheet with predetermend participents.
+
+
+```
+
