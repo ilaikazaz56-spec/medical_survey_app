@@ -2,28 +2,44 @@ import streamlit as st
 import pandas as pd
 import os
 
-# --- 1. SET UP PAGE CONFIGURATION FIRST ---
-st.set_page_config(page_title="Social Satisfaction Survey", layout="centered")
+# --- 1. SET UP STREAMLIT AUTO-RECOVERY TRACKER ---
+# This initializes our session tracker so we can query it at line 12 before anything else renders!
+if "respondent_id" not in st.session_state:
+    st.session_state["respondent_id"] = ""
 
-# --- 2. INITIALIZE BANNER MEMORY ---
+# --- 2. SET UP PAGE CONFIGURATION FIRST (DYNAMICAL!) ---
+# If a researcher has typed an ID, it snaps the tab name to their precise participant file instantly!
+tab_title = "Social Satisfaction Survey"
+if st.session_state["respondent_id"].strip() != "":
+    tab_title = f"ID: {st.session_state['respondent_id']}"
+
+st.set_page_config(
+    page_title=tab_title, 
+    page_icon="📊",
+    layout="centered"
+)
+
+# --- 3. INITIALIZE BANNER MEMORY ---
 if "success_flag" not in st.session_state:
     st.session_state["success_flag"] = False
 
-# --- 3. PATH CONFIGURATION ---
+# --- 4. PATH CONFIGURATION ---
 current_directory = os.path.dirname(os.path.abspath(__file__))
 csv_filename = os.path.join(current_directory, "survey_responses.csv")
 
-# --- 4. RENDER SUCCESS BANNER ---
+# --- 5. RENDER SUCCESS BANNER ---
 if st.session_state["success_flag"]:
     st.success("Data consolidated and saved successfully into a single master row!")
     st.session_state["success_flag"] = False
 
-# --- 5. MAIN TEXT DISPLAY ---
+# --- 6. MAIN TEXT DISPLAY ---
 st.title("Welcome to my study!")
 st.write("we will first start with some baseline data collection")
 
-# --- 6. GLOBAL PARTICIPANT ID (Shared across both test phases) ---
-respondent_id = st.text_input("Enter Participant Name/ID:").strip()
+# --- 7. GLOBAL PARTICIPANT ID (Shared across both test phases) ---
+# key="respondent_id" links this directly to session state. 
+# As soon as you stop typing or hit Enter, the browser tab updates immediately!
+respondent_id = st.text_input("Enter Participant Name/ID:", key="respondent_id").strip()
 
 # --- LIGHTWEIGHT SUCCESS FLAG NOTE ---
 def load_master_df():
@@ -37,7 +53,7 @@ def load_master_df():
 if respondent_id:
     df_master = load_master_df()
     if not df_master.empty and respondent_id in df_master["Respondent_ID"].astype(str).values:
-        st.caption(f"Record found for '{respondent_id}' submissions will update this row.*")
+        st.caption(f"*Record found for '{respondent_id}'. Submissions will update this row.*")
     else:
         st.caption(f"*New row initialized for '{respondent_id}'.*")
 
@@ -83,7 +99,7 @@ st.caption("collecting baseline tests")
 
 base_Decible = st.number_input("Baseline room decibel:")
 initial_drop_test = st.number_input("Baseline drop test result (cm):")
-age = st.number_input("What is your age?")
+age = st.number_input("What is your age?", value=21)
 
 med_history = st.checkbox("Any known medical issues? (Neurological, Hepatic, etc.)")
 past_mental = st.checkbox("Any history of mental health challenges? (Specifically Depression or Anxiety)")
@@ -177,7 +193,6 @@ st.markdown("#### Reaction Time & Post-Ingestion Biometrics")
 drop_test_1 = st.number_input("Drop Test 1 (cm):", value=0.0)
 drop_test_2 = st.number_input("Drop Test 2 (cm):", value=0.0)
 drop_test_3 = st.number_input("Drop Test 3 (cm):", value=0.0)
-# FIXED: Assigned default float values so researchers can enter decimals cleanly
 Decible_2 = st.number_input("Post-ingestion room decible:")
 BP_2 = st.text_input("Enter Post-Ingestion Blood Pressure (mmHg):", value="120/80")
 blood_glucose_2 = st.number_input("Enter Post-Ingestion Blood Glucose")
@@ -200,7 +215,8 @@ if submit_post:
             "Respondent_ID": respondent_id,
             "Num_of_Drinks": num_of_drink,
             "Post_Decibel": Decible_2,
-            "Drop_Test_avrager": (drop_test_1+drop_test_2 + drop_test_3)\3,
+            # FIXED: Changed backslash (\) to forward slash (/) for mathematical division tracking
+            "Drop_Test_avrager": (drop_test_1 + drop_test_2 + drop_test_3) / 3,
             "Post_BP": BP_2,
             "Post_Glucose": blood_glucose_2,
             "Post_Oral_Temp": Temp_2,
@@ -217,7 +233,7 @@ if submit_post:
         st.session_state["success_flag"] = True
         st.rerun()
 
-# --- 7. ADMIN CONSOLE DATA VIEW ---
+# --- 8. ADMIN CONSOLE DATA VIEW ---
 df_display = load_master_df()
 if not df_display.empty:
     st.write("---")
