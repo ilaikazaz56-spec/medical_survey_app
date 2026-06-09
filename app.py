@@ -19,8 +19,8 @@ if st.session_state["success_flag"]:
     st.session_state["success_flag"] = False
 
 # --- 5. MAIN TEXT DISPLAY ---
-st.title("Biometric Study: Pre vs. Post-Drinking")
-st.write("Data collected across both phases will automatically merge into a single row per participant name.")
+st.title("Welcome to my study!")
+st.write("we will first start with some baseline data collection")
 
 # --- 6. GLOBAL PARTICIPANT ID (Shared across both test phases) ---
 respondent_id = st.text_input("Enter Participant Name/ID:").strip()
@@ -37,9 +37,9 @@ def load_master_df():
 if respondent_id:
     df_master = load_master_df()
     if not df_master.empty and respondent_id in df_master["Respondent_ID"].astype(str).values:
-        st.caption(f"Record found for '{respondent_id}'. Any new submissions will update this row.*")
+        st.caption(f"Record found for '{respondent_id}' submissions will update this row.*")
     else:
-        st.caption(f"*New profile initialized for '{respondent_id}'.*")
+        st.caption(f"*New row initialized for '{respondent_id}'.*")
 
 st.write("---")
 
@@ -78,8 +78,8 @@ def save_consolidated_data(p_id, phase_dict):
 # ==============================================================================
 # PHASE 1: INITIAL BASELINE DATA SELECTION & BUTTON
 # ==============================================================================
-st.subheader("Phase 1: Initial Baseline Tests")
-st.caption("Collect and submit these metrics BEFORE the participant consumes any alcohol.")
+st.subheader("section 1: Initial Baseline Tests")
+st.caption("collecting baseline tests")
 
 base_Decible = st.number_input("Baseline room decibel:")
 initial_drop_test = st.number_input("Baseline drop test result (cm):")
@@ -87,7 +87,7 @@ age = st.number_input("What is your age?")
 
 med_history = st.checkbox("Any known medical issues? (Neurological, Hepatic, etc.)")
 past_mental = st.checkbox("Any history of mental health challenges? (Specifically Depression or Anxiety)")
-
+meals_hydration = st.slider("can you describe how hydrated and fed you feel?", 0, 10, 5)
 satisfaction = st.select_slider(
     "How satisfied are you with your current social status and relationships overall?",
     options=["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
@@ -138,6 +138,7 @@ if submit_baseline:
             "Baseline_Oral_Temp": Temp,
             "Baseline_Skin_Temp": body_temp,
             "Baseline_HR": heart_rate,
+            "food and drink" : meals_hydration
         }
         
         save_consolidated_data(respondent_id, baseline_fields)
