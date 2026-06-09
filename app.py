@@ -150,10 +150,10 @@ st.write("---")
 # ==============================================================================
 # PHASE 2: POST-INGESTION DATA SELECTION & BUTTON
 # ==============================================================================
-st.subheader("Phase 2: Post-Drinking Evaluation")
-st.caption("Collect and submit these metrics AFTER the participant has consumed alcohol.")
+st.subheader("section 2: Post-Drinking Evaluation")
+st.caption("metrics after alcohol ingestion")
 
-num_of_drink = st.number_input("How many alcoholic drinks have you had?", min_value=0, value=1)
+num_of_drink = st.number_input("How many alcoholic drinks have you had?")
 
 st.markdown("#### Enjoyment Metrics")
 fun_1 = st.select_slider(
@@ -200,9 +200,7 @@ if submit_post:
             "Respondent_ID": respondent_id,
             "Num_of_Drinks": num_of_drink,
             "Post_Decibel": Decible_2,
-            "Drop_Test_Post_1": drop_test_1,
-            "Drop_Test_Post_2": drop_test_2,
-            "Drop_Test_Post_3": drop_test_3,
+            "Drop_Test_avrager": (drop_test_1+drop_test_2 + drop_test_3)\3,
             "Post_BP": BP_2,
             "Post_Glucose": blood_glucose_2,
             "Post_Oral_Temp": Temp_2,
