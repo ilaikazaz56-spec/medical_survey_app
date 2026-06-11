@@ -216,16 +216,13 @@ if submit_post:
             "Num_of_Drinks": num_of_drink,
             "Post_Decibel": Decible_2,
             # FIXED: Changed backslash (\) to forward slash (/) for mathematical division tracking
-            "Drop_Test_avrager": (drop_test_1 + drop_test_2 + drop_test_3) / 3,
+            "Drop_Test_avrage": (drop_test_1 + drop_test_2 + drop_test_3) / 3,
             "Post_BP": BP_2,
             "Post_Glucose": blood_glucose_2,
             "Post_Oral_Temp": Temp_2,
             "Post_Skin_Temp": body_temp_2,
             "Post_HR": heart_rate_2,
-            "Enjoyment_1": likert_map[fun_1],
-            "Enjoyment_2": likert_map[fun_2],
-            "Enjoyment_3": likert_map[fun_3],
-            "Enjoyment_4": likert_map[fun_4],
+            "Enjoyment_total": likert_map[fun_1] + likert_map[fun_2]+likert_map[fun_3]-likert_map[fun_4],
             "alcohol percentage": alc_percent
         }
         
